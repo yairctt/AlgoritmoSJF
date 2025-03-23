@@ -6,6 +6,7 @@ public class Proceso {
     int tiempoFinalizacion;
     int tiempoRetorno;
     int tiempoEspera;
+    double penalizacion;
     boolean completado;
 
     public Proceso(String nombre, int tiempoLlegada, int tiempoEjecucion) {

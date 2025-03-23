@@ -111,6 +111,8 @@ public class AlgoritmoSJF {
             siguienteProceso.tiempoFinalizacion = tiempoActual + siguienteProceso.tiempoEjecucion;
             siguienteProceso.tiempoRetorno = siguienteProceso.tiempoFinalizacion - siguienteProceso.tiempoLlegada;
             siguienteProceso.tiempoEspera = siguienteProceso.tiempoRetorno - siguienteProceso.tiempoEjecucion;
+            siguienteProceso.penalizacion = (double) siguienteProceso.tiempoRetorno /  siguienteProceso.tiempoEjecucion;
+
 
             //actualizar estados de ejecucion
             for (int t = tiempoActual; t < siguienteProceso.tiempoFinalizacion; t++) {
@@ -165,14 +167,14 @@ public class AlgoritmoSJF {
 
     public static void mostrarTabla(List<Proceso> procesos) {
         System.out.println("\n------ Tabla de Tiempos ------");
-        System.out.printf("%-10s %-15s %-15s %-15s %-15s %-15s %-15s%n",
+        System.out.printf("%-10s %-15s %-15s %-15s %-15s %-15s %-15s %-15s%n",
                 "Proceso", "T. Llegada", "T. Ejecución", "T. Comienzo",
-                "T. Finalización", "T. Retorno", "T. Espera");
+                "T. Finalización", "T. Retorno", "T. Espera", "T.Penalización");
 
         for (Proceso p : procesos) {
-            System.out.printf("%-10s %-15d %-15d %-15d %-15d %-15d %-15d%n",
+            System.out.printf("%-10s %-15d %-15d %-15d %-15d %-15d %-15d %-15.2f%n",
                     p.nombre, p.tiempoLlegada, p.tiempoEjecucion, p.tiempoComienzo,
-                    p.tiempoFinalizacion, p.tiempoRetorno, p.tiempoEspera);
+                    p.tiempoFinalizacion, p.tiempoRetorno, p.tiempoEspera, p.penalizacion);
         }
     }
 
@@ -240,17 +242,21 @@ public class AlgoritmoSJF {
     public static void calcularTiemposMedios(List<Proceso> procesos) {
         double tiempoRetornoTotal = 0;
         double tiempoEsperaTotal = 0;
+        double tiempoDeEjecucionTotal = 0;
 
         for (Proceso p : procesos) {
             tiempoRetornoTotal += p.tiempoRetorno;
             tiempoEsperaTotal += p.tiempoEspera;
+            tiempoDeEjecucionTotal += p.tiempoEjecucion;
         }
 
         double tiempoRetornoMedio = tiempoRetornoTotal / procesos.size();
         double tiempoEsperaMedio = tiempoEsperaTotal / procesos.size();
+        double penalizacionmedia = tiempoRetornoTotal / tiempoDeEjecucionTotal;
 
         System.out.println("\n------ Tiempos Medios ------");
         System.out.printf("Tiempo medio de retorno: %.2f unidades\n", tiempoRetornoMedio);
         System.out.printf("Tiempo medio de espera: %.2f unidades\n", tiempoEsperaMedio);
+        System.out.printf("Penalizacion media: %.2f unidades\n", penalizacionmedia);
     }
 }
